@@ -33,6 +33,10 @@ m := NewMachine().Consult(`
   valor_descuento_salud(X,S):-valor_pago(X,P),factor_descuento_salud(F),S is P * F.
   valor_descuento_pension(X,S):-valor_pago(X,P),factor_descuento_pension(F),S is P * F.
 
+  valor_pago_bruto(X,B):-valor_pago(X,V),valor_descuento_salud(X,S),valor_descuento_pension(X,P), B is V - (S + P).
+
+  valores_finales(X,L):-valor_pago(X,V),valor_descuento_salud(X,S),valor_descuento_pension(X,P),valor_pago_bruto(X,B),L = [V,S,P,B].
+
   categoria(alejo, asociado).
   categoria(marce, asistente).
   vinculacion(alejo, tco).
@@ -70,6 +74,21 @@ for _, solution := range pagos_brutos {
 pagos_salud := m.ProveAll(`valor_descuento_salud(X,Y).`)
 for _, solution := range pagos_salud {
     fmt.Printf("%s pago salud -> %s \n", solution.ByName_("X"), solution.ByName_("Y"))
+}
+
+pagos_pension := m.ProveAll(`valor_descuento_pension(X,Y).`)
+for _, solution := range pagos_pension {
+    fmt.Printf("%s pago pension -> %s \n", solution.ByName_("X"), solution.ByName_("Y"))
+}
+
+pagos_bruto := m.ProveAll(`valor_pago_bruto(X,Y).`)
+for _, solution := range pagos_bruto {
+    fmt.Printf("%s pago bruto -> %s \n", solution.ByName_("X"), solution.ByName_("Y"))
+}
+
+pagos_finales := m.ProveAll(`valores_finales(X,Y).`)
+for _, solution := range pagos_finales {
+    fmt.Printf("%s lista -> %s \n", solution.ByName_("X"), solution.ByName_("Y"))
 }
 
 }
