@@ -49,18 +49,6 @@ m := NewMachine().Consult(`
 
 `)
 
-
-/*
-suma_elementos([], 0).
-suma_elementos([X|Xs], S):-suma_elementos(Xs, S2),S is S2 + X.
-
-verifica_hijos(P,[],R):-R is valido.
-verifica_hijos(P,H,R):-suma_elementos(P, S1),suma_elementos(H, S2),S2 <= S1,R is valido.
-verifica_hijos(P,H,R):-suma_elementos(P, S1),suma_elementos(H, S2),S2 > S1,R is novalido.
-
-ingresos_egresos(I,E,R):-suma_elementos(I, S1),suma_elementos(E, S2),S2 == S1,R is valido.
-ingresos_egresos(I,E,R):-suma_elementos(I, S1),suma_elementos(E, S2),S2 =/= S1,R is novalido.
-*/
 contratos := m.ProveAll(`valor_contrato(X,Y).`)
 for _, solution := range contratos {
     fmt.Printf("%s contrato -> %s \n", solution.ByName_("X"), solution.ByName_("Y"))
@@ -90,5 +78,4 @@ pagos_finales := m.ProveAll(`valores_finales(X,Y).`)
 for _, solution := range pagos_finales {
     fmt.Printf("%s lista -> %s \n", solution.ByName_("X"), solution.ByName_("Y"))
 }
-
 }
